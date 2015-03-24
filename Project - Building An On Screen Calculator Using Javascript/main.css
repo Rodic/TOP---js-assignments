@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+    font-family: 'VT323';
+}
+
+#calculator {
+    width: 248px;
+    margin: 0 auto;
+    margin-top: 80px;
+    border: 4px solid black;
+}
+
+#display {
+    width: 240px;
+    height: 55px;
+    font-size: 24px;
+    background-color: #E0F0B2;
+    border: 2px solid black;
+    border-bottom: 4px solid black;
+    padding: 10px;
+}
+
+#numpad div {
+    padding: 20px 0;
+    min-width: 80px;
+    text-align: center;
+    float:left;
+    border: 1px solid black; 
+    background-color: #eee;
+}
+
+#clear {
+    width: 240px;
+}
+
+.clearfix {
+    clear: both;
+}
