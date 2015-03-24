@@ -36,7 +36,7 @@ function Calculator() {
 	      $("#display").text(result);
 	      self.exp = [result];
 	      break;
-	    case "CE":
+	    case "C":
 	      $("#display").text("");
 	      self.exp = [];
 	      break;
