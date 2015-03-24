@@ -16,7 +16,7 @@ function Calculator() {
 	    else if ((split_index = exp.indexOf("-")) >= 0) { func = this.sub; }
 	    else if ((split_index = exp.indexOf("/")) >= 0) { func = this.div; }
 	    else if ((split_index = exp.indexOf("x")) >= 0) { func = this.mul; }
-	    else { return undefined }
+	    else { return NaN }
 	    
 	    return func(this.evalexp(exp.slice(0, split_index)), this.evalexp(exp.slice(split_index+1)));
 	}
