@@ -27,7 +27,7 @@ describe("Calculator#evalexp", function() {
 	expect(calculator.evalexp("10 / 4".split(' '))).toEqual(2.5);
     });
 
-    it("respect order of precedence in exps with addition and multiplication", function() {
+    it("respects order of precedence in exps with addition and multiplication", function() {
 	expect(calculator.evalexp("9 x 3 + 3".split(' '))).toEqual(30);
     });
 
