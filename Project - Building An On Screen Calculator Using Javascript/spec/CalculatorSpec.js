@@ -1,10 +1,8 @@
 
 describe("Calculator#evalexp", function() {
 
-    beforeEach(function() {
-	caluclator = new Calculator();
-    });
-
+    var caluclator = new Calculator();
+    
     it("evaluates exp of one num to itself", function() {
 	expect(calculator.evalexp(["1"])).toEqual(1);
     });
