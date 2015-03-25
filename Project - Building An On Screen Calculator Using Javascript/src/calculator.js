@@ -25,14 +25,21 @@ function Calculator() {
     this.exp = [];
 
     var self = this;
+ 
+    var isOperator = function(str) { return $.inArray(str, ["+", "-", "/", "x"]) >= 0; };
+
+    var normalizeNeg = function(exp) {
+	if(exp[0] === "-") exp.unshift("0"); 
+	return exp 
+    }
 
     this.setup = function() {
 	var input = $(this).text();
 	var result;
 
 	switch(input) {
-	    case "=": 
-	      result = self.evalexp(self.exp);
+	    case "=":
+	      result = self.evalexp(normalizeNeg(self.exp));
 	      $("#display").text(result);
 	      self.exp = [result];
 	      break;
@@ -41,11 +48,15 @@ function Calculator() {
 	      self.exp = [];
 	      break;
 	    default:
-	      $("#display").append(" " + input);
-	      self.exp.push(input);
-	      break;
+	      if (self.exp.length == 0 || isOperator(input) || isOperator(self.exp[self.exp.length-1])) {
+		  $("#display").append(" " + input);
+		  self.exp.push(input);
+	      } else {
+		  $("#display").append(input);
+		  self.exp[self.exp.length-1] += input;
+	      }
 	}
     }
 }
-var calculator = new Calculator();
-$(document).on("click", "#numpad > div", calculator.setup);
+
+$(document).on("click", "#numpad > div", new Calculator().setup);
