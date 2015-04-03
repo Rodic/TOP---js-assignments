@@ -12,48 +12,47 @@ function Calculator() {
 	    var split_index;
 	    var func;
 
-	         if ((split_index = exp.indexOf("+")) >= 0) { func = this.add; }
-	    else if ((split_index = exp.indexOf("-")) >= 0) { func = this.sub; }
-	    else if ((split_index = exp.indexOf("/")) >= 0) { func = this.div; }
-	    else if ((split_index = exp.indexOf("x")) >= 0) { func = this.mul; }
+	         if ((split_index = exp.indexOf("+")) >= 0) func = this.add;
+	    else if ((split_index = exp.indexOf("-")) >= 0) func = this.sub;
+	    else if ((split_index = exp.indexOf("/")) >= 0) func = this.div;
+	    else if ((split_index = exp.indexOf("x")) >= 0) func = this.mul;
 	    else { return NaN }
 	    
 	    return func(this.evalexp(exp.slice(0, split_index)), this.evalexp(exp.slice(split_index+1)));
 	}
     }
 
-    this.exp = [];
-
     var self = this;
  
     var isOperator = function(str) { return $.inArray(str, ["+", "-", "/", "x"]) >= 0; };
 
     var normalizeNeg = function(exp) {
-	if(exp[0] === "-") exp.unshift("0"); 
+	if(exp[0] === "-") {
+	    exp = exp.slice(1);
+	    exp[0] *= -1;
+	}
 	return exp 
     }
 
     this.setup = function() {
+	var display = $("#display");
 	var input = $(this).text();
-	var result;
+	var result, exp;
 
 	switch(input) {
 	    case "=":
-	      result = self.evalexp(normalizeNeg(self.exp));
-	      $("#display").text(result);
-	      self.exp = [result];
+	      exp = display.text().trim().split(" ");
+	      result = self.evalexp(normalizeNeg(exp));
+	      display.text(result);
 	      break;
 	    case "C":
-	      $("#display").text("");
-	      self.exp = [];
+	      display.text("");
 	      break;
 	    default:
-	      if (self.exp.length == 0 || isOperator(input) || isOperator(self.exp[self.exp.length-1])) {
-		  $("#display").append(" " + input);
-		  self.exp.push(input);
+	      if (isOperator(input) || isOperator($("#display").text().slice(-1))) {
+		  display.append(" " + input);
 	      } else {
-		  $("#display").append(input);
-		  self.exp[self.exp.length-1] += input;
+		  display.append(input);
 	      }
 	}
     }
