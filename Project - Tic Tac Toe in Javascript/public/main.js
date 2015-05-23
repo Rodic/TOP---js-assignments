@@ -61,7 +61,7 @@ var Game = function(table) {
 
   var table = table;
   var move = 0;
-  var playerMark;
+  var playerMark, score;
 
   this.play = function() {
     if(move % 2 === 0) {
@@ -72,10 +72,10 @@ var Game = function(table) {
       playerMark = 'o';
     }
 
-    var score = TableEvaluator.evaluate(table, playerMark);
+    score = TableEvaluator.evaluate(table, playerMark);
     if(score === 10)
       alert('Player ' + playerMark + ' won!');
-    else if(socre === 1)
+    else if(score === 1)
       alert('Draw!');
     else
       move += 1;
