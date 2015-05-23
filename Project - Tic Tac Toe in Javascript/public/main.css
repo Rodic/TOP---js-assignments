@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+#table {
+  width: 600px;
+  margin: 60px auto;
+}
+
+.cell {
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+  float: left;
+}
+
+.blank {
+  background-color: #eee;
+}
+
+.x {
+  background-image: url('images/x.png');
+  background-size: 200px 200px;
+}
+
+.o {
+  background-image: url('images/o.png');
+  background-size: 200px 200px;
+}
