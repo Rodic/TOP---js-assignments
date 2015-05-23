@@ -1,4 +1,4 @@
-describe("Game", function() {
+describe("TableEvaluator", function() {
 
   var table;
   var game;
@@ -14,7 +14,7 @@ describe("Game", function() {
     $("#jasmine_content").empty();
   });
 
-  describe("#gameEnd", function() {
+  describe("#evaluate", function() {
 
     it("Ends when there are 3 same marks in a row", function() {
       for(var row = 0; row < 2; row++) {
@@ -22,7 +22,7 @@ describe("Game", function() {
         table.setX($('.row-'+ row + '.col-1'));
         table.setX($('.row-'+ row + '.col-2'));
 
-        expect(game.gameEnd()).toBeTruthy();
+        expect(TableEvaluator.evaluate(table)).toBeTruthy();
       }
     });
 
@@ -32,7 +32,7 @@ describe("Game", function() {
         table.setX($('.row-'+ row + '.col-1'));
         table.setX($('.row-'+ row + '.col-2'));
 
-        expect(game.gameEnd()).toBeFalsy();
+        expect(TableEvaluator.evaluate(table)).toBeFalsy();
       }
     });
 
@@ -42,7 +42,7 @@ describe("Game", function() {
         table.setO($('.row-1.col-'+ col));
         table.setO($('.row-2.col-'+ col));
 
-        expect(game.gameEnd()).toBeTruthy();
+        expect(TableEvaluator.evaluate(table)).toBeTruthy();
       }
     });
 
@@ -52,7 +52,7 @@ describe("Game", function() {
         table.setX($('.row-1.col-'+ col));
         table.setO($('.row-2.col-'+ col));
 
-        expect(game.gameEnd()).toBeFalsy();
+        expect(TableEvaluator.evaluate(table)).toBeFalsy();
       }
     });
 
@@ -61,7 +61,7 @@ describe("Game", function() {
       table.setO($('.row-1.col-1'));
       table.setO($('.row-2.col-0'));
 
-      expect(game.gameEnd()).toBeTruthy();
+      expect(TableEvaluator.evaluate(table)).toBeTruthy();
     });
 
     it("Fails to end game when there are no 3 same marks in the raising col", function() {
@@ -69,7 +69,7 @@ describe("Game", function() {
       table.setX($('.row-1.col-1'));
       table.setO($('.row-2.col-0'));
 
-      expect(game.gameEnd()).toBeFalsy();
+      expect(TableEvaluator.evaluate(table)).toBeFalsy();
     });
 
     it("Ends when there are 3 same marks in the falling col", function() {
@@ -77,7 +77,7 @@ describe("Game", function() {
       table.setX($('.row-1.col-1'));
       table.setX($('.row-2.col-2'));
 
-      expect(game.gameEnd()).toBeTruthy();
+      expect(TableEvaluator.evaluate(table)).toBeTruthy();
     });
 
     it("Fails to End game when there are no 3 same marks in the falling col", function() {
@@ -85,7 +85,7 @@ describe("Game", function() {
       table.setO($('.row-1.col-1'));
       table.setX($('.row-2.col-2'));
 
-      expect(game.gameEnd()).toBeFalsy();
+      expect(TableEvaluator.evaluate(table)).toBeFalsy();
     });
   });
 });

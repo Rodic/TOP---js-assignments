@@ -1,11 +1,6 @@
-var Game = function(table) {
+var TableEvaluator = {
 
-  var table = table;
-  var move = 0;
-
-  var that = this;
-
-  this.gameEnd = function() {
+    evaluate : function(table) {
 
     var mapClassesToInts = function(cell) {
       if($(cell).hasClass('x'))
@@ -56,6 +51,14 @@ var Game = function(table) {
 
     return checkRows || checkCols || checkRisingDiagonal || checkFallingDiagonal || isDraw();
   }
+}
+
+var Game = function(table) {
+
+  var table = table;
+  var move = 0;
+
+  var that = this;
 
   this.play = function() {
     if(move % 2 === 0) {
@@ -64,7 +67,7 @@ var Game = function(table) {
       table.setO(this);
     }
 
-    that.gameEnd();
+    TableEvaluator.evaluate(table);
     move += 1;
   }
 
