@@ -1,6 +1,6 @@
 var TableEvaluator = {
 
-    evaluate : function(table) {
+  evaluate : function(table, playerMark) {
 
     var mapClassesToInts = function(cell) {
       if($(cell).hasClass('x'))
@@ -11,45 +11,49 @@ var TableEvaluator = {
         return 0
     };
 
-    var isSeqComplete = function(arr) {
+    var evaluateSeq = function(arr) {
       var mapped = arr.map(mapClassesToInts);
       var summed = mapped.reduce(function(a, b) { return a + b });
 
-      if(summed === 3) {
-        alert("X won!"); 
-        return true;
-      } else if(summed === -3) {
-        alert("O won!"); 
-        return true;
-      } else {
-        return false;
-      }
+      // Revard for winning is 10 points and for losing -10, 0 signals game is not complete
+      if((summed === 3 && playerMark === 'x') || (summed === -3 && playerMark === 'o'))
+        return 10;
+      else if((summed === 3 && playerMark === 'o') || (summed === -3 && playerMark === 'x'))
+        return -10
+      else
+        return 0;
     }
 
-    var areSeqsComplete = function(getSeq) {
+    var evaluateSeqs = function(getTableSeq) {
       for(var i = 0; i < 3; i++) {
-        var done = isSeqComplete(getSeq(i));
-        if(done)
-          return true;
+        var score = evaluateSeq(getTableSeq(i));
+        if(score !== 0)
+          return score;
       }
-      return false;
+      return 0;
     }
 
     var isDraw = function() {
-      if ($('.blank').length === 0) {
-        alert('Draw!');
-        return true;
-      } else {
-        return false;
-      }
+      // Revard for draw is 1 point
+      return ($('.blank').length === 0) ? 1 : 0;
     }
 
-    var checkRows = areSeqsComplete(table.getRow);
-    var checkCols = areSeqsComplete(table.getCol);
-    var checkRisingDiagonal  = isSeqComplete(table.getRaisingDiagonal());
-    var checkFallingDiagonal = isSeqComplete(table.getFallingDiagonal());
+    var max = function(arr, fn) {
+      var i = 0
+      for(var j = 0; j < arr.length; j++) {
+        if(fn(arr[j]) > fn(arr[i])) {
+          i = j;
+        }
+      }
+      return arr[i];
+    }
 
-    return checkRows || checkCols || checkRisingDiagonal || checkFallingDiagonal || isDraw();
+    var evalRows = evaluateSeqs(table.getRow);
+    var evalCols = evaluateSeqs(table.getCol);
+    var evalRisingDiagonal  = evaluateSeq(table.getRaisingDiagonal());
+    var evalFallingDiagonal = evaluateSeq(table.getFallingDiagonal());
+
+    return max([ evalRows, evalCols, evalRisingDiagonal, evalFallingDiagonal, isDraw() ], Math.abs);
   }
 }
 
@@ -57,18 +61,24 @@ var Game = function(table) {
 
   var table = table;
   var move = 0;
-
-  var that = this;
+  var playerMark;
 
   this.play = function() {
     if(move % 2 === 0) {
       table.setX(this);
+      playerMark = 'x';
     } else {
       table.setO(this);
+      playerMark = 'o';
     }
 
-    TableEvaluator.evaluate(table);
-    move += 1;
+    var score = TableEvaluator.evaluate(table, playerMark);
+    if(score === 10)
+      alert('Player ' + playerMark + ' won!');
+    else if(socre === 1)
+      alert('Draw!');
+    else
+      move += 1;
   }
 
   this.init = function() {
