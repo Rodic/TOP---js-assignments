@@ -1,3 +1,11 @@
+var betterMax = function(arr, fn) {
+  return arr.reduce(function(a, b) { return fn(a) > fn(b) ? a : b });
+}
+
+var betterMin = function(arr, fn) {
+  return arr.reduce(function(a, b) { return fn(a) < fn(b) ? a : b });
+}
+
 var TableEvaluator = {
 
   evaluate : function(table, playerMark) {
@@ -38,26 +46,69 @@ var TableEvaluator = {
       return ($('.blank').length === 0) ? 1 : 0;
     }
 
-    var max = function(arr, fn) {
-      var i = 0
-      for(var j = 0; j < arr.length; j++) {
-        if(fn(arr[j]) > fn(arr[i])) {
-          i = j;
-        }
-      }
-      return arr[i];
-    }
-
     var evalRows = evaluateSeqs(table.getRow);
     var evalCols = evaluateSeqs(table.getCol);
     var evalRisingDiagonal  = evaluateSeq(table.getRaisingDiagonal());
     var evalFallingDiagonal = evaluateSeq(table.getFallingDiagonal());
 
-    return max([ evalRows, evalCols, evalRisingDiagonal, evalFallingDiagonal, isDraw() ], Math.abs);
+    return betterMax([ evalRows, evalCols, evalRisingDiagonal, evalFallingDiagonal, isDraw() ], Math.abs);
   }
 }
 
-var Game = function(table) {
+var AiPlayer = function(table) {
+  // AI player plays as  'o'
+  // In max step algo chooses the move which leads to the biggest reward for AI
+  // Min step simulates human player
+  // move picked in there is one that leads to the smallest revard for AI player
+  
+  var cache = [];
+
+  var minmax = function(player) {
+
+    var candidates = [];
+    var blanks = $('.blank');
+
+    for(var i = 0; i < blanks.length; i++) {
+      
+      if(player === 'o')
+        table.setO(blanks[i]);
+      else
+        table.setX(blanks[i]);
+
+      var score = TableEvaluator.evaluate(table, 'o');
+
+      if(score !== 0) {
+        table.setBlank(blanks[i]);
+        candidates.push([ $(blanks[i]).attr('class'), score ]);
+      } else {
+
+        var hash = $('.cell').toArray().map(function(c) { return $(c).attr('class') }).join('/');
+
+        if(!cache[hash]) {
+          score = minmax(player === 'o' ? 'x' : 'o')[1];
+          cache[hash] = score;
+        }
+        
+        table.setBlank(blanks[i]);
+        candidates.push([ $(blanks[i]).attr('class'), cache[hash] ]);
+      }
+    }
+
+    if(player === 'o')
+      return betterMax(candidates, function(c) { return c[1] });
+    else
+      return betterMin(candidates, function(c) { return c[1] });
+  };
+
+  this.bestMove = function() {
+    var result = minmax('o');
+    var move   = result[0];
+    var score  = result[1];
+    return '.' + move.split(' ').join('.');
+  };
+}
+
+var Game = function(table, ai) {
 
   var table = table;
   var move = 0;
@@ -68,17 +119,21 @@ var Game = function(table) {
       table.setX(this);
       playerMark = 'x';
     } else {
-      table.setO(this);
+      table.setO($(ai.bestMove()));
       playerMark = 'o';
     }
 
     score = TableEvaluator.evaluate(table, playerMark);
+
     if(score === 10)
       alert('Player ' + playerMark + ' won!');
     else if(score === 1)
       alert('Draw!');
-    else
+    else {
       move += 1;
+      if(playerMark === 'x')
+        this.click();
+    }
   }
 
   this.init = function() {
@@ -89,12 +144,12 @@ var Game = function(table) {
 
 var Table = function(parentDiv) {
 
-  var parent = $(parentDiv);
+  this.parent = $(parentDiv);
 
   this.render = function() {
     for(var row = 0; row < 3; row++) {
       for(var col = 0; col < 3; col++) {
-        parent.append('<div class="blank cell row-'+ row +' col-'+ col +'"></div>');
+        this.parent.append('<div class="blank cell row-'+ row +' col-'+ col +'"></div>');
       }
     }
   }
@@ -108,6 +163,13 @@ var Table = function(parentDiv) {
       } else
         throw "Field is not blank!";
     }
+  }
+
+  this.setBlank = function(field) {
+    field = $(field);
+    field.removeClass('x');
+    field.removeClass('o');
+    field.addClass('blank');
   }
 
   this.setX = setMark('x');
@@ -132,6 +194,7 @@ var Table = function(parentDiv) {
 
 $(document).ready(function() {
   var table = new Table("#table");
-  var game  = new Game(table);
+  var ai    = new AiPlayer(table);
+  var game  = new Game(table, ai);
   game.init();
 });
