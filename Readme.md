@@ -13,3 +13,5 @@ Learn more at [TOP](http://www.theodinproject.com/javascript-and-jquery).
 4. [Image Carousel](https://github.com/Rodic/TOP---js-assignments/tree/master/Project%20-%20Creating%20an%20Image%20Carousel%20in%20Javascript)
 
 5. [Tic Tac Toe (With AI)](https://github.com/Rodic/TOP---js-assignments/tree/master/Project%20-%20Tic%20Tac%20Toe%20in%20Javascript)
+
+6. [Minesweeper](https://github.com/Rodic/TOP---js-assignments/tree/master/Project%20-%20Minesweeper%20in%20Javscript)
