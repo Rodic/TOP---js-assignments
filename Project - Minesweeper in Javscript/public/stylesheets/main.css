@@ -1,0 +1,103 @@
+* {
+   box-sizing: border-box;
+}
+
+#controlls {
+  width: 540px;
+  margin: 30px auto;
+  background-color: #30872D;
+  padding: 15px;
+  color: white;
+  border-radius: 25px;
+}
+
+#controlls label {
+  display: inline-block; 
+  width: 140px;
+  margin: 5px;
+}
+
+#controlls #left {
+  width: 50%;
+  float: left;
+}
+
+#controlls #right {
+  width: 50%;
+  float: right;
+}
+
+.clearfix {
+  clear: both;
+}
+
+#table {
+  width: 540px;
+  margin: 60px auto;
+}
+
+.field {
+  width: 60px;
+  height: 60px;
+  float: left;
+  border: 1px solid black;
+  display: block;
+}
+
+.empty {
+  background-color: #ddd;
+}
+
+.red {
+  background-color: red;
+}
+
+.mine {
+  background-image: url('../images/mine.png');
+  background-size: 60px 60px;
+}
+
+.flag {
+  background-image: url('../images/red-flag.jpg');
+  background-size: 60px 60px;
+}
+
+.one {
+  background-image: url('../images/1.jpg');
+  background-size: 60px 60px;
+}
+
+.two {
+  background-image: url('../images/2.jpg');
+  background-size: 60px 60px;
+}
+
+.three {
+  background-image: url('../images/3.jpg');
+  background-size: 60px 60px;
+}
+
+.four {
+  background-image: url('../images/4.jpg');
+  background-size: 60px 60px;
+}
+
+.five {
+  background-image: url('../images/5.jpg');
+  background-size: 60px 60px;
+}
+
+.six {
+  background-image: url('../images/6.jpg');
+  background-size: 60px 60px;
+}
+
+.seven {
+  background-image: url('../images/4.jpg');
+  background-size: 60px 60px;
+}
+
+.eight {
+  background-image: url('../images/8.jpg');
+  background-size: 60px 60px;
+}

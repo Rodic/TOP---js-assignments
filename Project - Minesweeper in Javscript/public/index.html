@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Minesweeper</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
+  <script type="text/javascript" src="javascripts/minesweeper.js"></script>
+  <link rel="stylesheet" type="text/css" href="stylesheets/main.css">
+</head>
+<body>
+  <div id="controlls">
+
+    <div id="left">
+      <label for="rows">Number of rows:</label>
+      <input type="text" id="rows" value="9" size="1">
+
+      <br>
+
+      <label for="cols">Number of columns:</label>
+      <input type="text" id="cols" value="9" size="1">
+
+      <br>
+
+      <label for="cols">Number of mines:</label>
+      <input type="text" id="mines" value="10" size="1">
+
+      <br>
+
+      <input type="button" id="start" value="Start!">
+    </div>
+
+    <div id="right">
+      <label for="timer">Time elapsed:</label>
+      <input id="timer" type="text" value="0" size="10">
+
+      <label for="flags">Flags placed:</label>
+      <input id="flags" type="text" value="0" size="2">
+    </div>
+
+    <div class="clearfix"></div>
+  </div>
+
+  <div id="table"></div>
+</body>
+</html>
